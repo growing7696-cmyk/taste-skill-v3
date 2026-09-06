@@ -1,0 +1,17 @@
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Node
+node_modules/
+npm-debug.log*
+
+# 빌드 산출물 (예시 프로젝트 올릴 경우)
+.next/
+dist/
+build/
+
+# 에디터
+.vscode/
+.idea/
+*.swp

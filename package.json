@@ -1,0 +1,10 @@
+{
+  "name": "taste-skill-v3",
+  "version": "3.1.0",
+  "description": "Anti-slop frontend skill: active Layout Casting, real block library, multi-variant mode, and a measured performance gate.",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "check": "node scripts/check.mjs"
+  }
+}

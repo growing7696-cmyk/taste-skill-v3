@@ -1,0 +1,9 @@
+{
+  "name": "taste-skill-v3",
+  "version": "3.0.0",
+  "description": "Anti-slop frontend skill. v3 forks v2 and adds an active Layout Casting pass that assigns a deliberate, rotated layout set per build instead of only banning repetition, so page structure stops converging on the same safe defaults.",
+  "license": "MIT",
+  "skills": [
+    "./skills/taste-skill-v3"
+  ]
+}
