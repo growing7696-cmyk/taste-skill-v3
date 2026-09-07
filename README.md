@@ -50,13 +50,13 @@ Rule-level comparison (verifiable against the two SKILL.md files, no screenshots
 The `npx skills add` CLI scans the `skills/` folder in this repo.
 
 ```
-npx skills add https://github.com/<your-username>/taste-skill-v3
+npx skills add https://github.com/growing7696-cmyk/taste-skill-v3
 ```
 
 Install just this skill by its install name (the `name:` field in the SKILL frontmatter):
 
 ```
-npx skills add https://github.com/<your-username>/taste-skill-v3 --skill "design-taste-frontend-v3"
+npx skills add https://github.com/growing7696-cmyk/taste-skill-v3 --skill "design-taste-frontend-v3"
 ```
 
 You can also copy `skills/taste-skill-v3/SKILL.md` into your project, or paste it into a Claude Code / Cursor / Codex session directly.
