@@ -694,6 +694,57 @@ This rule is non-negotiable. The agent has historically ignored em-dash limits w
 
 ---
 
+## 9.5 UX WRITING (Anti-AI-Copy, v3)
+
+> **Why this section exists.** Section 9 removes the *visual* AI tells. This removes the *verbal* ones. A page can have flawless layout and still read as AI-written the moment the copy loads: empty adjectives, uniform sentence rhythm, "unlock / elevate / seamless" filler, headlines that describe a feeling instead of stating a fact. The base skill bans a short list of cliché words. That is necessary but not sufficient: AI copy gives itself away through *structure*, not just vocabulary. This section corrects the structure. It applies to every user-facing string the build produces - headlines, subtext, button labels, empty states, alt text, meta descriptions - in whatever language the brief is written in.
+
+**This is a rewrite discipline, not a word blacklist.** When a line reads like AI wrote it, the fix is almost never "swap one word"; it is "say a specific true thing instead of a vague nice thing."
+
+### 9.5.A The four structural tells (fix these, not just the words)
+
+1. **Empty adjectives instead of facts.** AI reaches for "특별한 / 혁신적인 / 압도적인" and "powerful / seamless / cutting-edge / next-gen" because they sound like marketing without committing to anything. Replace the adjective with the fact that would earn it. Not "특별한 대원 인형" but "관절 32개, 전술 복장 12종". Not "a powerful editor" but "opens a 1GB file in under a second". If you cannot name the fact, the adjective is hiding that there isn't one.
+
+2. **Uniform sentence rhythm.** AI writes every sentence at the same medium length, so the copy has no pulse. Human copy varies: a three-word line, then a longer one that carries the detail, then a fragment. Vary sentence length deliberately across a block. One short punch is worth three even sentences.
+
+3. **Feeling-first headlines that state nothing.** "당신을 위한 특별한 경험", "Experience the future of X", "Where ideas come to life" - these describe an emotion and commit to no fact. A headline should be able to fail a fact-check, which means it says something checkable. "15,000원, 목요일 도착" is a headline. "특별한 굿즈샵" is a mood.
+
+4. **The setup-phrase habit.** AI opens with "우리는 믿습니다 / In today's world / We're on a mission to / Introducing". Cut the runway; start at the fact. "Introducing PhantomShop" becomes "PhantomShop". "우리는 최고의 인형을 만듭니다" becomes the thing the doll actually is.
+
+### 9.5.B Empty filler (language-agnostic rule, not a fixed word list)
+
+Every language has its own set of empty marketing intensifiers - words that sound like a claim but commit to no fact. The rule is language-independent: **write in whatever language the brief uses, and in THAT language, route around its empty-intensifier vocabulary.** Do not assume the brief is English or Korean; apply the principle to Japanese, Chinese, Spanish, German, or any other target language natively.
+
+The single test that works in every language: **"Is there a checkable fact under this word?"** If yes, keep it. If the word is only there to sound impressive, cut it or replace it with the fact.
+
+Reference examples of the *category* to route around (these are illustrations, not the whole list - find the equivalents in your target language):
+
+- **English:** elevate, unlock, unleash, seamless, effortless, cutting-edge, next-gen, game-changer, revolutionary, powerful, robust, delve, "in today's world", "we're on a mission", "experience the", "the future of".
+- **Korean:** 특별한, 혁신적인, 압도적인, 놀라운, 완벽한, 최고의, 차원이 다른, 지금 바로 만나보세요, 경험해보세요, 당신을 위한.
+- **(any other language):** identify the same category - the words that pad without committing - and route around them the same way. A Japanese page should not lean on 究極の / 革新的な as empty padding; a Spanish page should not lean on "revoluciona tu" / "lleva al siguiente nivel"; and so on. The point is the pattern, not this specific list.
+
+A flagged word is still acceptable when it is literally accurate and load-bearing ("revolutionary" for an actual revolution). The fact test decides, in any language.
+
+### 9.5.C Rewrite examples (both languages)
+
+- `특별한 대원 인형을 만나보세요` -> `대원 인형. 관절 32개, 갈아끼우는 전술 장비 12종.`
+- `당신을 위한 미래형 특수부대 굿즈샵` -> `팬텀부대 공식 굿즈. 한정 드롭, 매주 목요일.`
+- `Experience the future of motion design` -> `Title sequences, game trailers, tour visuals. Six years, one person.`
+- `Powerful, seamless, and intuitive` -> `Opens instantly. Keyboard-first. No account required.`
+- `We're on a mission to elevate your workflow` -> `Cuts a 3-step export to one.`
+
+Notice the pattern: every rewrite trades an adjective for a number, a noun, or a concrete verb. That is the whole move.
+
+### 9.5.D Voice consistency and locale
+
+- **Pick a voice and hold it.** Terse-technical, warm-plain, or dry-editorial - one voice per page, matched to the brief and audience (Section 0). AI drifts between voices paragraph to paragraph; a real brand does not.
+- **Write in the brief's language natively, do not translate.** Korean copy should read as Korean copy, not as translated English (no "당신의 워크플로우를 향상시키세요" translationese). English copy should not read as translated Korean. If the brief is Korean, the fluff list in Korean above applies; if English, the English one.
+- **Match register to context.** A 404 or an empty state can have personality; a checkout button cannot be cute at the cost of clarity. "Start a session" beats "Let's gooo".
+
+### 9.5.E Pre-Flight tie-in
+
+Before FINAL, read every user-facing string once and ask: does each headline state a checkable fact, is any banned filler present, does sentence rhythm vary, is the voice consistent? A page that passes the visual AI-tell audit (Section 9) but fails this one still reads as AI-made. Both must pass.
+
+
 ## 10. REFERENCE VOCABULARY (Pattern Names the Agent Should Know)
 
 **Loaded on demand.** The full pattern vocabulary (40+ named heroes, layouts, cards, scroll effects, micro-interactions) lives in `reference/pattern-vocabulary.md`. Read it when you need a pattern name you do not already know, or when casting a section you want to build by hand. The families the Layout Cast reaches for most are already summarized in Section 1.5.C.
@@ -748,6 +799,7 @@ Run this matrix before outputting code. This is the last filter.
 - [ ] **Structural-variety floor (v3, Section 1.5.C)**: at least 2 structural-variety families in the cast, at least 5 distinct families across an 8-section page?
 - [ ] **Performance Gate (v3, Section 15)**: on a FINAL build, was Lighthouse actually run on a production build, with Performance >= 90 and A11y/BP/SEO >= 95, and the real numbers reported (not asserted)? If the environment cannot run Lighthouse, is that stated explicitly rather than claiming a score?
 - [ ] **Fidelity declared (v3, Section 15.C)**: is this output labeled DRAFT or FINAL, so a draft is never mistaken for a guaranteed page?
+- [ ] **UX writing (v3, Section 9.5)**: does every headline state a checkable fact (not a mood), is banned filler absent (특별한/혁신적인, elevate/seamless/etc.), does sentence rhythm vary, is the voice consistent and native to the brief's language (not translationese)?
 - [ ] **XSS guardrails (v3, Section 6.5)**: no unsanitized `dangerouslySetInnerHTML` / `innerHTML`; user-supplied URLs allow-listed by scheme (no `javascript:`); markdown/rich-text sanitized; no `eval` or string-built dynamic script? If the page renders zero user-controlled HTML, is that stated rather than adding a sanitizer for nothing?
 - [ ] **Design system** chosen from Section 2 if applicable, or aesthetic labeled honestly?
 - [ ] **Redesign mode** detected and audit performed (if applicable, Section 11)?
