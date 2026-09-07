@@ -6,6 +6,27 @@ v3 is a **fork of the v2 skill** by [Leonxlnx/taste-skill](https://github.com/Le
 
 > Not affiliated with or endorsed by the original taste-skill author. This is an independent fork. All v2 content is credited to the original project (MIT).
 
+## v3 vs the base skill, at a glance
+
+v3 inherits the entire base rule set and adds five things the base skill has no equivalent of. Everything else ties.
+
+| | Base skill | v3 |
+| --- | --- | --- |
+| Layout variety | bans repeats (checked after the fact) | **casts** a rotated layout set up front (Section 1.5) |
+| Same brief, run twice | repeats itself | diverges (seed + hero rotation) |
+| Multiple directions | one brief, one page | 3 variants + comparison table (Section 1.6) |
+| Copy / UX writing | bans a few cliche words | corrects AI-copy structure, any language (Section 9.5) |
+| Security | not addressed | XSS guardrails, enforced in Pre-Flight (Section 6.5) |
+| Performance | sets good inputs, never measures | measured Lighthouse gate, >= 90 required (Section 15) |
+| Block library | 8-part schema, zero blocks shipped | 4 real blocks against that schema (Section 12) |
+
+**Don't take the table on trust.** Two ways to verify, both without believing a screenshot:
+
+1. **Compare the rules.** The full section-by-section diff is in [COMPARISON.md](./COMPARISON.md), checkable against the two public `SKILL.md` files.
+2. **Reproduce the behavior.** Run [`prompts/greenfield.md`](./prompts/greenfield.md) twice on the base skill, then twice on v3. The base skill returns effectively the same page; v3 diverges. Five minutes, your own machine.
+
+For the precise, verifiable breakdown, see **[COMPARISON.md](./COMPARISON.md)**.
+
 ## What v3 changes
 
 The original skill controls layout almost entirely through *bans*: no centered hero, no three equal cards, no third zigzag, one layout family per section. Bans stop the worst repeats, but they do not create variety. An agent that only avoids the banned set converges on the small pool of safe, un-banned structures, so every page still rhymes: split hero, bento, zigzag, logo wall, CTA.
