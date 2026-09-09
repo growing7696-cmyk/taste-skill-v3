@@ -38,6 +38,8 @@ Export      skills/taste-stitch            DESIGN.md for Google Stitch, plus the
             skills/GPT-taste               GPT and Codex packaging of the engine
 ```
 
+Per-skill detail, including when to reach for each one and how they combine, is in [`skills/README.md`](./skills/README.md).
+
 Every build posts a header before any markup:
 
 ```text

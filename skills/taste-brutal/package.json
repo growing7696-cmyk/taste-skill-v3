@@ -1,7 +1,7 @@
 {
   "name": "taste-brutal",
-  "version": "3.1.0",
-  "description": "Anti-slop frontend skill: active Layout Casting, real block library, multi-variant mode, and a measured performance gate.",
+  "version": "4.0.0",
+  "description": "Brutalist frontend style skill: two committed modes (neo and industrial), active Layout Casting, real block library, multi-variant mode, and a measured performance gate.",
   "license": "MIT",
   "type": "module",
   "scripts": {

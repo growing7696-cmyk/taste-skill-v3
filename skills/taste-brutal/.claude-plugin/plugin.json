@@ -1,7 +1,7 @@
 {
   "name": "taste-brutal",
-  "version": "1.0.0",
-  "description": "Neo-brutalist frontend skill. Forks the taste-skill engine (Layout Casting, block library, multi-variant, performance gate) but inverts the aesthetic: hard edges, thick black borders, flat fluorescent color, system/mono type, brutal contrast.",
+  "version": "4.0.0",
+  "description": "Brutalist frontend style skill in two committed modes: neo (loud, flat, fluorescent, hard offset shadows) and industrial (Swiss print meets tactical telemetry, rigid grids, analog degradation). Forks the taste-skill engine and inverts its aesthetic, while inheriting the taste-core contract: rule tiers, the accessibility floor, the asset budget, and the verification gates.",
   "license": "MIT",
   "skills": [
     "./skills/taste-brutal"

@@ -237,6 +237,7 @@ section("9. Required package files exist");
     "prompts/redesign.md",
     "prompts/variants-and-perf.md",
     ".claude-plugin/plugin.json",
+    "skills/README.md",
     "skills/_core/SKILL.md",
     "skills/taste-skill-v3/SKILL.md",
     "skills/GPT-taste/SKILL.md",

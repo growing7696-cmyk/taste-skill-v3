@@ -1,5 +1,26 @@
 # CLAUDE.md
 
+## The contract comes first (v4)
+
+This project uses `taste-brutal`, a **style skill** in the taste family. Read `skills/_core/SKILL.md` before this file. It is short and it settles what this file used to answer by reflex.
+
+- **Pick a mode and commit.** `MODE: neo` (loud, flat, fluorescent, poster-like) or `MODE: industrial` (Swiss print meets tactical telemetry). Never mix substrates or blend the type systems. Declare it: `STYLE: taste-brutal, MODE: neo`. Industrial spec is in `skills/taste-brutal/reference/modes.md`.
+- **One style skill only.** Never load `taste-minimal` or `taste-soft` alongside this.
+- **Rule tiers.** Every aesthetic rule here is DEFAULT tier. Brand tokens, an installed design system, or an explicit request beats it, and the override gets one logged line. HARD is only the accessibility floor, security, licensing, and honesty.
+- **The brutalist carve-outs are HARD.** 16px body prose, 14px minimum for monospace and micro labels, no all-caps paragraphs, overlays capped at 0.10 opacity over text with contrast measured on the composite, fluorescent pairs measured against their actual substrate, decorative ASCII marked `aria-hidden`.
+- **Asset budget.** NONE for edits, SPOT (1 to 3) for a new page, more only on request. Declare before generating.
+- **Gates.** `npm run verify:screens`, `npm run verify:a11y` (zero critical, zero serious), and on FINAL builds `npm run verify:lighthouse`. A gate that cannot run is DEFERRED. **Never claim a score you did not measure.**
+
+Post the header before any markup:
+
+```text
+SKILLS:    engine=design-taste-frontend-v3 style=taste-brutal (MODE: neo | industrial)
+SCOPE:     in scope | split | out of scope (routed to <system>)
+FIDELITY:  DRAFT | FINAL
+ASSETS:    NONE | SPOT | SECTION | FULL, with the planned count
+OVERRIDES: <one line each, or "none">
+```
+
 This project uses **taste-brutal** (`design-taste-brutalist`) for all frontend design work: landing pages, portfolios, marketing pages, redesigns. The full rule set lives in the skill. This file is the short leash: it exists to stop the mistakes taste-skill's own rules say the agent makes most often, and to guarantee the brutal Layout Cast step never gets skipped.
 
 Read this before writing any UI. When it conflicts with your defaults, this file wins.
