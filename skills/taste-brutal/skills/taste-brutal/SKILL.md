@@ -10,6 +10,32 @@ description: Neo-brutalist frontend skill for landing pages, portfolios, and cam
 
 ---
 
+---
+
+## CONTRACT (inherited from `taste-core`)
+
+Inherits `skills/_core/SKILL.md`: precedence ladder, rule tiers, accessibility floor, asset budget, verification gates. Read that file first. It is short, and it settles the questions this file used to answer by reflex.
+
+**Rule tiers.** Every rule below is **DEFAULT tier** unless it is marked HARD. A DEFAULT rule is correct until an explicit user instruction (L3) or existing project reality (L4: brand tokens, an installed design system, repo conventions) says otherwise, at which point the project wins and the override is logged in one line. The HARD rules are the accessibility floor, the security guardrails in Section 6.5, licensing, and the honesty rules. Aesthetic bans are never HARD.
+
+**Style layer.** This file is the engine: design read, dials, layout cast, pre-flight. Surface (color, depth, corner, motion feel) belongs to at most one style skill: `taste-minimal`, `taste-soft`, or `taste-brutal`. Never load two.
+
+**Scope.** Marketing and brand surfaces only. Dashboards, dense data tables, wizards, settings, code editors, and native apps route to a product design system. Product systems are named in this file only to route work away from it, never as a licence to build product UI with these rules. See `skills/_core/reference/scope-router.md`.
+
+**Asset budget.** Image generation is budgeted, not mandated: NONE for edits and small changes, SPOT (1 to 3) as the default for a new page, SECTION or FULL only when the user asks. Declare it before generating. See `skills/_core/reference/asset-budget.md`.
+
+**Verification.** The written pre-flight is necessary and not sufficient. Runnable gates: `npm run verify:screens` (responsive), `npm run verify:a11y` (zero critical, zero serious), and on FINAL builds `npm run verify:lighthouse`. A gate that cannot run is reported as DEFERRED. Claiming a score you did not measure is a HARD violation.
+
+**Output header.** Post this before any markup:
+
+```text
+SKILLS:    engine=<this> style=<skill or none> workflow=<list or none>
+SCOPE:     in scope | split | out of scope (routed to <system>)
+FIDELITY:  DRAFT | FINAL
+ASSETS:    NONE | SPOT | SECTION | FULL, with the planned count
+OVERRIDES: <one line per precedence override, or "none">
+```
+
 ## 0. BRIEF INFERENCE (Read the Room Before Anything Else)
 
 Before touching code or tweaking dials, **infer what the user actually wants**. Most LLM design output is bad because the model jumps to a default aesthetic instead of reading the room.
@@ -290,6 +316,26 @@ Before importing ANY 3rd-party library, check `package.json`. If the package is 
 
 **The one-line philosophy.** Refined design hides its construction. Brutalism shows it. Hard edges, exposed structure, flat color, system type, and contrast so high it is almost rude. It should look confident and intentional, never like a polished site that failed to load its styles. The line between brutalism and broken is *intent expressed through consistency*: every hard choice is applied everywhere, on purpose.
 
+### 4.0.0 Pick a mode (this skill now covers both brutalisms)
+
+This package absorbs what used to be a separate `industrial-brutalist-ui` skill. Two brutalist skills that never referenced each other produced exactly the conflict the core contract exists to prevent, so they are one skill with two committed modes.
+
+- **MODE: neo** - loud, flat, fluorescent, poster-like. Thick black borders, hard offset shadows, saturated flat color, system and grotesk type. This is what the rest of Section 4.0 describes.
+- **MODE: industrial** - Swiss print meets tactical telemetry. Rigid grids, extreme type-scale contrast, utilitarian two-color substrate, simulated analog degradation. Full spec in `reference/modes.md`.
+
+**Pick one and commit.** Declare it in the output header: `STYLE: taste-brutal, MODE: neo`. Do not mix substrates, do not blend the type systems, do not alternate between modes inside one page.
+
+### 4.0.0.A The accessibility carve-outs both modes obey (HARD)
+
+Brutalism fails the accessibility floor in four predictable places. These are not negotiable, and every one of them can be fixed without softening the look.
+
+- **Type size.** Body prose at 16px minimum. Monospace and micro labels at 14px minimum, never 10px. Wide-tracked uppercase at small sizes is the least readable combination available.
+- **All caps.** Headlines, labels, and data of five words or fewer. Never a paragraph. An all-caps body block is a reading failure wearing a design decision.
+- **Overlays.** Scanlines, halftone, grain, and CRT effects live on a `position: fixed; pointer-events: none` layer, are capped at 0.10 opacity over any region containing text, and their contrast is measured on the composited result, not on the text color alone. They are disabled under `prefers-contrast: more`, and any that move are disabled under `prefers-reduced-motion: reduce`.
+- **Fluorescent pairs.** Electric yellow on white fails. Measure every accent against its actual substrate before shipping it. `npm run verify:a11y` is the check, not your eye.
+
+Decorative ASCII framing, crosshairs, barcode rules, and glyph clusters carry `aria-hidden="true"`. Invented telemetry strings are fine as decoration and are never presented as live system data.
+
 ### 4.0.A Color (inverts 4.2, 9.A, 9.F)
 
 - **Pure black `#000` and pure white `#fff` are REQUIRED, not banned.** The base skill forbids them to preserve depth; brutalism wants the flatness. Use them.
@@ -434,8 +480,12 @@ LLMs default to "static successful state only." Always implement full cycles:
 
 Landing pages and portfolios are **visual products**. Text-only pages with fake-screenshot divs are slop.
 
-**Priority order for visual assets:**
-1. **Image-generation tool first.** If ANY image-gen tool is available in the environment (`generate_image`, MCP image tool, IDE-integrated gen, OpenAI image tools, etc.) you MUST use it to create section-specific assets: hero photography, product shots, texture backgrounds, mood images. Generate at the right aspect ratio for the section. Do not skip this step because hand-rolled CSS feels faster.
+**Budget first (see `skills/_core/reference/asset-budget.md`).** Declare NONE, SPOT, SECTION, or FULL before generating anything. NONE is the default for edits, bug fixes, copy changes, accessibility work, performance work, and any project that already has an asset library or a design system. SPOT (1 to 3 images) is the default for a new page. SECTION and FULL happen only when the user asks for a visual direction pass or a comp set. Never escalate silently, and never generate for a small change.
+
+**HARD**: no critical text is ever baked into a generated image: no value proposition, price, CTA label, navigation, or legal text. The image carries composition and mood; real text lives in markup.
+
+**Priority order within the declared budget:**
+1. **Image-generation tool, when the budget allows it.** If ANY image-gen tool is available in the environment (`generate_image`, MCP image tool, IDE-integrated gen, OpenAI image tools, etc.) you MUST use it to create section-specific assets: hero photography, product shots, texture backgrounds, mood images. Generate at the right aspect ratio for the section. Do not skip this step because hand-rolled CSS feels faster.
 2. **Real web images second.** When no gen tool is available, use real photography sources. Acceptable defaults:
    * `https://picsum.photos/seed/{descriptive-seed}/{w}/{h}` for placeholder photography (seed should describe the section, e.g. `marrow-cookware-kitchen`)
    * Actual stock or brand URLs when the brief provides them
@@ -778,6 +828,8 @@ This skill is NOT for:
 
 If the brief is one of the above, **say so explicitly**, point to the right tool, and only apply this skill's marketing-page / about-page / landing-page parts to the surfaces where they apply.
 
+**Why product design systems are named in this file at all.** They exist here for exactly one purpose: routing a task away from this skill. Naming Fluent, Carbon, Atlassian, or Polaris is never permission to build a dashboard with these rules. If any passage in this file reads like guidance for building product UI, treat it as a scope leak and fall back to `skills/_core/reference/scope-router.md`.
+
 ---
 
 ## 14. FINAL PRE-FLIGHT CHECK
@@ -854,6 +906,16 @@ Run this matrix before outputting code. This is the last filter.
 - [ ] **No AI Tells** from Section 9 (Inter as default, AI-purple, three-equal cards, Jane Doe, Acme, "Quietly in use at")?
 - [ ] **Core Web Vitals** plausibly hit (LCP < 2.5s, INP < 200ms, CLS < 0.1)?
 - [ ] **One design system** per project (no Material + shadcn mixed)?
+
+- [ ] **Contract header posted** (skills, scope, fidelity, asset budget, overrides)?
+- [ ] **Rule tiers respected**: every aesthetic ban treated as DEFAULT, every override against a brand token or a user instruction logged in one line rather than applied silently?
+- [ ] **Accessibility floor** clear on every HARD item: contrast measured (including text over imagery, noise, and glass), visible focus on every control, targets at 24px minimum and 44px for primary, keyboard order sane, reduced-motion path real, no critical text baked into an image, one h1 and no skipped levels, labels on every input, empty / loading / error states present?
+- [ ] **G1 responsive gate** run (`npm run verify:screens`), or reported as DEFERRED with a reason?
+- [ ] **G2 accessibility gate** run (`npm run verify:a11y`) with zero critical and zero serious, or reported as DEFERRED?
+- [ ] **G3 performance gate** run on FINAL builds only (`npm run verify:lighthouse`), real numbers reported, or DEFERRED with a reason? No score claimed without a run?
+- [ ] **Asset budget** declared before generating, and honored?
+- [ ] **Scope** declared, and anything product-UI shaped routed out rather than built with these rules?
+- [ ] **One style skill** at most, named in the header?
 
 If a single checkbox cannot be honestly ticked, the page is not done. Fix it before delivering.
 

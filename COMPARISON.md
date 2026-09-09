@@ -1,79 +1,60 @@
 # v3 vs the base skill
 
-This is a rule-level comparison. It is based on the files currently shipped in this repository, especially the included v3 skill packages and their `SKILL.md`, `reference/`, and `blocks/` files.
+A rule-level comparison against [Leonxlnx/taste-skill](https://github.com/Leonxlnx/taste-skill), based on the files shipped in this repository.
 
-## Current Package Shape
-
-This repo includes three skill packages:
+## Package shape
 
 ```text
-skills/taste-skill-v3/   primary v3 skill package
-skills/GPT-taste/        GPT/OpenAI-oriented package of the v3 skill
-skills/taste-brutal/     neo-brutalist companion skill package
+skills/_core/                 shared governance contract, inherited by every skill
+skills/taste-skill-v3/        engine: design read, dials, layout cast, pre-flight
+skills/GPT-taste/             GPT and Codex packaging of the engine
+skills/taste-brutal/          style: neo and industrial brutalism, two modes
+skills/taste-minimal/         style: flat editorial surface
+skills/taste-soft/            style: layered tactile surface
+skills/taste-redesign/        workflow: audit, change, prove nothing broke
+skills/taste-image-to-code/   workflow: reference-first, gated
+skills/taste-output/          workflow: completeness without over-blocking
+skills/taste-imagegen-web/    asset: budgeted web comps
+skills/taste-imagegen-mobile/ asset: budgeted screen sets
+skills/taste-brandkit/        asset: vector-first identity kits
+skills/taste-stitch/          export: DESIGN.md for Google Stitch
+scripts/verify/               the runnable gates
 ```
 
-The comparison below focuses on the v3 frontend taste skill. `skills/GPT-taste` packages the same v3 direction for GPT/OpenAI use, while `skills/taste-brutal` is a separate included skill that reuses the engine with a neo-brutalist aesthetic.
+## Systemic differences
 
-## What v3 Adds
-
-| Area | Base skill | v3 in this repo |
+| Area | Base skill collection | Here |
 | --- | --- | --- |
-| Layout variety | Repetition is mostly controlled by bans and review after the page exists. | Layout is cast before markup. The agent states a hero paradigm, layout seed, and section-by-section layout families before building. |
-| Same brief twice | Can converge on the same safe structure. | Uses hero rotation and a layout seed to make repeat runs diverge while staying faithful to the brief. |
-| Multiple directions | One brief usually produces one page. | Multi-Variant Mode creates separate design directions and compares them when the user asks for variants. |
-| UX writing | Mostly focused on visual polish and a few wording tells. | Adds a copy-quality pass: concrete facts over empty adjectives, native-language rhythm, checkable headlines, and fewer setup phrases. |
-| Security | Not a design-skill concern. | Adds XSS guardrails for user HTML, markdown, URLs, scripts, and unsafe React escape hatches. |
-| Performance | Encourages good performance practices. | Requires final builds to measure production performance when possible, with Lighthouse targets. |
-| Block library | Defines the concept of reusable blocks. | Ships four actual block files that match the contract. |
+| Skills interacting | Each skill is standalone and unaware of the others, so a flat skill and a bezelled skill can both be loaded and silently fight | Skills are typed. One style skill at a time, enforced, and a precedence ladder settles every remaining conflict |
+| Rule strength | Aesthetic bans stated absolutely: no Inter, no Lucide, no centered hero, no three-column cards, no gradients, no serif, no `rounded-full` | Three tiers. Nearly every aesthetic ban is DEFAULT and yields to brand tokens or an explicit request, with a logged override. HARD is reserved for accessibility, security, licensing, and honesty |
+| Scope | Marketing-only scope stated, then product design systems and dashboard guidance mixed into the same file | Scope router. Product systems are named only to route work away, and a passage that reads like product-UI guidance is treated as a leak |
+| Image generation | One image per section, always, no exceptions; landing pages default to eight or more; image-first mandatory for visual work | Budgeted: NONE, SPOT, SECTION, FULL, declared before generating. NONE by default on edits. Image-first gated by a trigger matrix |
+| Verification | Pre-flight checklists the model ticks about its own work | Four gates with real scripts: responsive assertions, axe with a zero-serious bar, Lighthouse on a production build, plus a redesign regression diff. Claiming an unmeasured score is a HARD violation |
+| Accessibility | Mentioned, ranked below aesthetics, largely absent from the image-generation skills | A HARD floor that outranks every style skill, with per-style fixes that preserve each look, and text-in-image banned family-wide |
 
-## Included Skill Files
+## Per-skill differences
 
-Primary v3 package:
+| Skill | What changed |
+| --- | --- |
+| Engine | Layout Casting before markup, multi-variant mode, UX writing pass, XSS guardrails, measured performance gate, real block library. Now also carries the core contract, the scope note, the asset budget, and the gate boxes in pre-flight |
+| `taste-minimal` | The `rounded-full` ban and the pill-shaped-tag rule no longer contradict each other. Muted grays darkened to clear 4.5:1. Dark mode added, since the original was light-only. Component states required |
+| `taste-soft` | "$150k agency" replaced by a four-level elevation scale with values. Bezels budgeted at two per page and one nesting level. Font stacks require a real fallback and a license status. Glass requires a contrast measurement and a `@supports` fallback. Nested icon buttons keep a 44px target |
+| `taste-brutal` | Absorbs the separate industrial brutalism skill as `MODE: industrial`. Type floors: 16px body, 14px micro, no all-caps paragraphs. Overlays capped and contrast measured on the composite. Decorative ASCII marked `aria-hidden` |
+| `taste-redesign` | Baseline capture before the first edit, a regression diff for URLs, meta, structured data, analytics hooks, and alt coverage. Legal and cookie items are reported with jurisdiction reasoning instead of installed by reflex, and compliance is never claimed |
+| `taste-image-to-code` | Image-first is conditional. A written spec is extracted before implementation, states are designed explicitly, and rendering artifacts are never reproduced as design |
+| `taste-imagegen-web` | Per-section generation is a tier, not a mandate. Mobile frames required. Critical text never baked in. An implementation spec ships with the images |
+| `taste-imagegen-mobile` | Screen counts budgeted, depth preferred over breadth, and a token and spec handoff is mandatory so screens convert into a build |
+| `taste-brandkit` | The logo is authored as SVG geometry rather than generated as a raster. Minimum size, clearspace, variants, color tokens with contrast pairs, and type license status are deliverables. A trademark risk checklist reports risk and never claims clearance |
+| `taste-stitch` | Motion capped at two continuous elements with reduced-motion counterparts written inline. A required accessibility section in `DESIGN.md`. A three-revision feedback loop plus a post-pass list for what Stitch cannot express |
+| `taste-output` | Completeness enforcement kept, with an allowlist so test fixtures, labeled intentional stubs, tracked TODOs, and generated files are not blocked. Silent truncation is a defect; a resume marker is required |
 
-- `skills/taste-skill-v3/SKILL.md`
-- `skills/taste-skill-v3/reference/appendix-canonical-sources.md`
-- `skills/taste-skill-v3/reference/appendix-install-commands.md`
-- `skills/taste-skill-v3/reference/appendix-liquid-glass.md`
-- `skills/taste-skill-v3/reference/block-library-contract.md`
-- `skills/taste-skill-v3/reference/pattern-vocabulary.md`
-- `skills/taste-skill-v3/reference/redesign-protocol.md`
-- `skills/taste-skill-v3/reference/scroll-skeletons.md`
-- `skills/taste-skill-v3/blocks/hero/editorial-manifesto.md`
-- `skills/taste-skill-v3/blocks/feature/sticky-stack.md`
-- `skills/taste-skill-v3/blocks/feature/editorial-asymmetric.md`
-- `skills/taste-skill-v3/blocks/feature/bento-grid.md`
+## How to verify the difference
 
-Root support files:
+1. Load two style skills at once and watch the contract force a choice instead of blending them.
+2. Put an `Inter` brand token in `tailwind.config.ts` and confirm the engine keeps it and logs the override rather than fighting it.
+3. Ask for a one-line copy change and confirm the asset budget stays at NONE.
+4. Run `npm run verify:a11y` against the result and confirm the bar is zero serious, not "looks accessible".
+5. Run a redesign with `verify:baseline` before and `verify:diff` after, then break an analytics hook on purpose and watch the diff catch it.
+6. Run `npm run check`.
 
-- `CLAUDE.md`
-- `CODEX.md`
-- `prompts/greenfield.md`
-- `prompts/redesign.md`
-- `prompts/variants-and-perf.md`
-- `scripts/check.mjs`
-
-GPT/OpenAI-oriented package:
-
-- `skills/GPT-taste/SKILL.md`
-- `skills/GPT-taste/agents/openai.yaml`
-- `skills/GPT-taste/reference/`
-- `skills/GPT-taste/blocks/`
-
-Neo-brutalist companion package:
-
-- `skills/taste-brutal/README.md`
-- `skills/taste-brutal/CLAUDE.md`
-- `skills/taste-brutal/.claude-plugin/plugin.json`
-- `skills/taste-brutal/skills/taste-brutal/SKILL.md`
-- `skills/taste-brutal/skills/taste-brutal/reference/`
-- `skills/taste-brutal/skills/taste-brutal/blocks/`
-
-## How To Verify
-
-1. Compare the base skill's `SKILL.md` against `skills/taste-skill-v3/SKILL.md`.
-2. Check that v3 asks for a design read, dial posture, and layout cast before markup.
-3. Ask for three variants from one brief and confirm that v3 produces distinct directions instead of palette swaps.
-4. Inspect the four block files under `skills/taste-skill-v3/blocks/`.
-5. Run `npm run check` to validate the included repository structure.
-
-The important difference is not a screenshot. It is the workflow: v3 makes structure explicit before implementation.
+The important difference is not a screenshot. It is that the rules now know about each other, know when to yield, and get checked by something other than the model that wrote them.

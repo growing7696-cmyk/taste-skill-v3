@@ -1,10 +1,22 @@
 {
   "name": "taste-skill-v3",
-  "version": "3.1.0",
-  "description": "Anti-slop frontend skill: active Layout Casting, real block library, multi-variant mode, and a measured performance gate.",
+  "version": "4.0.0",
+  "description": "Anti-slop frontend skill family: a shared governance contract, an engine with active Layout Casting, mutually exclusive style skills, budgeted asset skills, and runnable verification gates.",
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "check": "node scripts/check.mjs"
+    "check": "node scripts/check.mjs",
+    "verify:screens": "node scripts/verify/screenshots.mjs",
+    "verify:a11y": "node scripts/verify/a11y.mjs",
+    "verify:lighthouse": "node scripts/verify/lighthouse.mjs",
+    "verify:baseline": "node scripts/verify/baseline.mjs",
+    "verify:diff": "node scripts/verify/diff.mjs"
+  },
+  "devDependencies": {},
+  "optionalDependencies": {
+    "axe-core": "^4.10.2",
+    "chrome-launcher": "^1.1.2",
+    "lighthouse": "^12.2.1",
+    "playwright": "^1.49.0"
   }
 }

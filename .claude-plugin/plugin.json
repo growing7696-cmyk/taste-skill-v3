@@ -1,9 +1,20 @@
 {
   "name": "taste-skill-v3",
-  "version": "3.1.0",
-  "description": "Anti-slop frontend skill. v3 forks v2 and adds an active Layout Casting pass that assigns a deliberate, rotated layout set per build instead of only banning repetition, so page structure stops converging on the same safe defaults.",
+  "version": "4.0.0",
+  "description": "Anti-slop frontend skill family. A shared governance contract (taste-core) resolves conflicts between skills, tiers every rule so brand tokens can override aesthetics, holds a non-negotiable accessibility floor, budgets image generation, and defines runnable verification gates. The engine adds active Layout Casting; style, workflow, asset, and export skills plug into it.",
   "license": "MIT",
   "skills": [
-    "./skills/taste-skill-v3"
+    "./skills/_core",
+    "./skills/taste-skill-v3",
+    "./skills/taste-minimal",
+    "./skills/taste-soft",
+    "./skills/taste-brutal/skills/taste-brutal",
+    "./skills/taste-redesign",
+    "./skills/taste-image-to-code",
+    "./skills/taste-output",
+    "./skills/taste-imagegen-web",
+    "./skills/taste-imagegen-mobile",
+    "./skills/taste-brandkit",
+    "./skills/taste-stitch"
   ]
 }

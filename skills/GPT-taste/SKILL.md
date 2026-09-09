@@ -11,6 +11,32 @@ Use this skill to help ChatGPT or Codex ship frontend pages that feel designed i
 
 This skill is not a general product-UI system. If the task is primarily a dashboard, admin panel, dense data table, wizard, code editor, or native mobile app, say the fit is limited and use this skill only for marketing, home, about, launch, or editorial surfaces.
 
+---
+
+## CONTRACT (inherited from `taste-core`)
+
+Inherits `skills/_core/SKILL.md`: precedence ladder, rule tiers, accessibility floor, asset budget, verification gates. Read that file first. It is short, and it settles the questions this file used to answer by reflex.
+
+**Rule tiers.** Every rule below is **DEFAULT tier** unless it is marked HARD. A DEFAULT rule is correct until an explicit user instruction (L3) or existing project reality (L4: brand tokens, an installed design system, repo conventions) says otherwise, at which point the project wins and the override is logged in one line. The HARD rules are the accessibility floor, the security guardrails in Section 6.5, licensing, and the honesty rules. Aesthetic bans are never HARD.
+
+**Style layer.** This file is the engine: design read, dials, layout cast, pre-flight. Surface (color, depth, corner, motion feel) belongs to at most one style skill: `taste-minimal`, `taste-soft`, or `taste-brutal`. Never load two.
+
+**Scope.** Marketing and brand surfaces only. Dashboards, dense data tables, wizards, settings, code editors, and native apps route to a product design system. Product systems are named in this file only to route work away from it, never as a licence to build product UI with these rules. See `skills/_core/reference/scope-router.md`.
+
+**Asset budget.** Image generation is budgeted, not mandated: NONE for edits and small changes, SPOT (1 to 3) as the default for a new page, SECTION or FULL only when the user asks. Declare it before generating. See `skills/_core/reference/asset-budget.md`.
+
+**Verification.** The written pre-flight is necessary and not sufficient. Runnable gates: `npm run verify:screens` (responsive), `npm run verify:a11y` (zero critical, zero serious), and on FINAL builds `npm run verify:lighthouse`. A gate that cannot run is reported as DEFERRED. Claiming a score you did not measure is a HARD violation.
+
+**Output header.** Post this before any markup:
+
+```text
+SKILLS:    engine=<this> style=<skill or none> workflow=<list or none>
+SCOPE:     in scope | split | out of scope (routed to <system>)
+FIDELITY:  DRAFT | FINAL
+ASSETS:    NONE | SPOT | SECTION | FULL, with the planned count
+OVERRIDES: <one line per precedence override, or "none">
+```
+
 ## 1. First Read
 
 Before touching code, infer the brief:

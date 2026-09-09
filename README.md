@@ -1,135 +1,140 @@
 # Taste Skill v3
 
-An anti-slop frontend skill for AI coding agents. It helps agents build landing pages, portfolios, marketing pages, editorial brand pages, and redesigns that feel intentionally designed instead of templated.
+An anti-slop frontend skill family for AI coding agents. It helps agents build landing pages, portfolios, marketing pages, editorial brand pages, and redesigns that feel intentionally designed instead of templated, without shipping inaccessible, unverified, or over-expensive work in the process.
 
-v3 is an independent fork inspired by [Leonxlnx/taste-skill](https://github.com/Leonxlnx/taste-skill). It keeps the taste-skill goal, then adds one core mechanism: **Layout Casting**, an up-front structure pass that stops repeated default layouts before code is written.
+v3 is an independent fork inspired by [Leonxlnx/taste-skill](https://github.com/Leonxlnx/taste-skill). It keeps the taste-skill goal and adds two things the original did not have: **Layout Casting**, an up-front structure pass, and **a governance contract** that makes a pile of opinionated skills behave like one system.
 
 > Not affiliated with or endorsed by the original taste-skill author. Original project credit remains with Leonxlnx/taste-skill under the MIT license.
 
-## What Is In This Repo
+## The problem this release solves
 
-This repository includes three skill packages:
+A collection of strong-opinioned design skills that do not know about each other fails in five predictable ways. Version 4.0.0 of this repo addresses each one structurally rather than by editing prose.
+
+| Failure | Fix |
+| --- | --- |
+| Skills contradict each other (flat versus bezelled, marketing scope versus product UI) | `skills/_core`: a precedence ladder, typed skill layers, one style skill at a time |
+| Blanket bans misfire on branded projects (no Inter, no gradients, no `rounded-full`) | Three rule tiers: HARD, DEFAULT, PREFERENCE, plus a Brand Override Protocol with a logged override line |
+| Image generation mandated per section, at real cost | An asset budget: NONE, SPOT, SECTION, FULL, declared before generating, NONE by default on edits |
+| Verification is a checklist the model ticks about itself | Four gates with runnable scripts in `scripts/verify/`, and a HARD rule against claiming an unmeasured score |
+| Accessibility ranked below taste | A HARD accessibility floor that outranks every style skill, with per-style fixes that preserve the look |
+
+## Skill map
+
+Skills are typed, and the type decides how many can be active at once.
 
 ```text
-skills/taste-skill-v3/   primary v3 skill package
-skills/GPT-taste/        GPT/OpenAI-oriented package of the v3 skill
-skills/taste-brutal/     neo-brutalist companion skill package
+Engine      skills/taste-skill-v3          design read, dials, layout cast, pre-flight   exactly 1
+Contract    skills/_core                   inherited by everything else                  always
+Style       skills/taste-minimal           flat editorial surface                        at most 1
+            skills/taste-soft              layered tactile surface
+            skills/taste-brutal            neo and industrial brutalism, two modes
+Workflow    skills/taste-redesign          audit, change, prove nothing broke            any number
+            skills/taste-image-to-code     reference-first, gated by a trigger matrix
+            skills/taste-output            completeness without over-blocking stubs
+Asset       skills/taste-imagegen-web      budgeted web comps with an implementation spec
+            skills/taste-imagegen-mobile   budgeted screen sets with a token handoff
+            skills/taste-brandkit          vector-first identity kits
+Export      skills/taste-stitch            DESIGN.md for Google Stitch, plus the feedback loop
+            skills/GPT-taste               GPT and Codex packaging of the engine
 ```
 
-Supporting files:
+Every build posts a header before any markup:
 
-- `CLAUDE.md` - project instruction file for Claude Code.
-- `CODEX.md` - project instruction file for Codex.
-- `prompts/` - ready-to-paste demo prompts for greenfield builds, redesigns, and variants.
-- `scripts/check.mjs` - repository validation for markdown rules, skill references, and block files.
-- `COMPARISON.md` - rule-level comparison against the base skill.
-- `CHANGELOG.md` - changes by version.
+```text
+SKILLS:    engine=design-taste-frontend-v3 style=taste-minimal workflow=none
+SCOPE:     in scope (developer tool landing page)
+FIDELITY:  DRAFT
+ASSETS:    SPOT, 3 images
+OVERRIDES: Inter is an engine DEFAULT ban -> keeping Inter (source: L4, tailwind.config.ts)
+```
 
-The root plugin manifest points at `skills/taste-skill-v3`. The other two folders are included skill packages and are intentionally kept in the repo.
+## The core contract
 
-## What v3 Adds
+`skills/_core/SKILL.md` is short and is read first. Its reference files carry the detail:
 
-### Layout Casting
+- `reference/precedence.md` - the ladder, with worked conflicts.
+- `reference/rule-tiers.md` - every re-tiered ban, with its override condition.
+- `reference/accessibility-floor.md` - the HARD floor, item by item, each marked auto or manual.
+- `reference/verification.md` - the four gates, their bars, and honest reporting.
+- `reference/asset-budget.md` - the four budget tiers and the decision matrix.
+- `reference/scope-router.md` - what these skills are not for, and where to route it.
 
-The base skill mostly prevents repetition with after-the-fact bans. v3 turns structure into a deliberate planning step:
+## Verification
 
-1. State the design read.
-2. Set `DESIGN_VARIANCE`, `MOTION_INTENSITY`, and `VISUAL_DENSITY`.
-3. Cast the page sections before markup, including hero paradigm, layout families, and a layout seed.
-4. Build to that cast.
-5. Run pre-flight before calling the work done.
+```bash
+npm run check                                          # repo structure, dash rules, inheritance
+npm run verify:screens     -- --url http://localhost:3000
+npm run verify:a11y        -- --url http://localhost:3000
+npm run verify:lighthouse  -- --url http://localhost:3000   # FINAL builds, production server only
+```
 
-The cast requires distinct layout families, limits repeated split sections, and draws from structural-variety families such as `full-bleed`, `sticky-stack`, `editorial-asymmetric`, `marquee-band`, and `split-screen-scroll`.
+Redesign regression:
 
-### Multi-Variant Mode
+```bash
+npm run verify:baseline -- --url https://live-site.example --out .verify/baseline
+npm run verify:baseline -- --url http://localhost:3000      --out .verify/after
+npm run verify:diff     -- --before .verify/baseline --after .verify/after
+```
 
-When the user asks for options or variants, v3 can produce multiple design directions from one brief. Each variant needs a different structural spine, hero paradigm, dial posture, or visual language, followed by a comparison table and recommendation.
+The tools are optional dependencies. A missing tool exits with code 3 and prints DEFERRED. It never prints a pass it did not earn.
 
-### UX Writing
+```bash
+npm i -D playwright axe-core lighthouse chrome-launcher
+npx playwright install chromium
+```
 
-The skill treats AI-looking copy as part of design quality. It asks the agent to replace empty adjectives with facts, vary sentence rhythm, write in the brief's language natively, and make headlines state something checkable.
+## What the engine adds
 
-### Security Guardrails
+**Layout Casting.** Structure is cast before markup: hero paradigm, a layout family per section, a layout seed, with a distinct-family floor and a structural-variety floor. Bans stop the worst repeats; casting creates variety.
 
-The skill includes frontend XSS guardrails for the common mistakes AI agents make: unsafe `dangerouslySetInnerHTML`, direct `innerHTML`, unvalidated URLs, unsanitized markdown, string-built scripts, and similar vectors.
+**Multi-variant mode.** On request, one brief becomes several genuinely different directions, compared in a table, with only the chosen one paying for the full gates.
 
-### Performance Gate
+**UX writing.** Copy quality treated as design quality: concrete facts over empty adjectives, native-language rhythm, checkable headlines.
 
-Final web builds should run a production build and Lighthouse when the environment allows it. The target is Performance >= 90 and Accessibility, Best Practices, and SEO >= 95.
+**Security guardrails.** Frontend XSS vectors that AI code introduces most often.
 
-### Block Library
+**Block library.** Real block files that match the block contract, not just the concept of one.
 
-v3 includes real reusable block files:
+## Migration from the original skill set
 
-- `skills/taste-skill-v3/blocks/hero/editorial-manifesto.md`
-- `skills/taste-skill-v3/blocks/feature/sticky-stack.md`
-- `skills/taste-skill-v3/blocks/feature/editorial-asymmetric.md`
-- `skills/taste-skill-v3/blocks/feature/bento-grid.md`
+| Original | Here |
+| --- | --- |
+| `taste-skill` / `design-taste-frontend` | `skills/taste-skill-v3` (engine) |
+| `taste-skill-v1` | retired. The v1 rules are strictly weaker; use the engine with the dials set low for a restrained build |
+| `gpt-tasteskill` | `skills/GPT-taste`. The simulated random-number "design plan" is gone; variety comes from the stated layout seed, and GSAP and AIDA are PREFERENCE, not requirements |
+| `minimalist-skill` | `skills/taste-minimal`, with the pill-versus-`rounded-full` contradiction resolved and dark mode added |
+| `soft-skill` | `skills/taste-soft`, with a measurable elevation scale replacing "$150k agency", and a bezel budget |
+| `brutalist-skill` | merged into `skills/taste-brutal` as `MODE: industrial` |
+| `redesign-skill` | `skills/taste-redesign`, with a captured baseline, a regression diff, and jurisdiction-aware compliance reporting |
+| `image-to-code-skill` | `skills/taste-image-to-code`, image-first gated by a trigger matrix |
+| `imagegen-frontend-web` | `skills/taste-imagegen-web`, budgeted, with mobile frames and a required implementation spec |
+| `imagegen-frontend-mobile` | `skills/taste-imagegen-mobile`, budgeted, with a token and spec handoff |
+| `brandkit` | `skills/taste-brandkit`, vector-first, with a trademark risk checklist that never claims clearance |
+| `stitch-skill` | `skills/taste-stitch`, with a verification loop and a post-pass list |
+| `output-skill` | `skills/taste-output`, with an allowlist so fixtures and intentional stubs are not blocked |
 
-Each block follows the block-library contract and gives the agent a concrete implementation pattern instead of only a rule.
+## Compatible agents
 
-## Compatible Agents
-
-`SKILL.md` is plain markdown, so it can be used by multiple coding agents.
+`SKILL.md` is plain markdown, so several agents can use it.
 
 | Agent | How to load it |
 | --- | --- |
-| Claude Code | Install the skill, or copy `CLAUDE.md` into your project root for project instructions. |
-| Codex | Install the skill when available, or copy `CODEX.md` into your project root for project instructions. |
-| Cursor | Add `SKILL.md` contents to a project rule, or reference the file from a rule. |
-| Other agents | Paste `SKILL.md` into the session before the build request. |
-
-The full skill lives in `skills/taste-skill-v3/SKILL.md`. The agent instruction files are short project leashes that keep the highest-risk rules visible in every session.
+| Claude Code | Install the plugin, or copy `CLAUDE.md` into your project root |
+| Codex | Install the skill, or copy `CODEX.md` into your project root |
+| Cursor | Reference `skills/_core/SKILL.md` and the engine `SKILL.md` from a project rule |
+| Other agents | Paste `skills/_core/SKILL.md` then the engine `SKILL.md` before the build request |
 
 ## Installing
-
-The install name is the `name:` field in the skill frontmatter:
 
 ```bash
 npx skills add https://github.com/<your-username>/taste-skill-v3 --skill "design-taste-frontend-v3"
 ```
 
-You can also copy the package folder you need into your skill directory, or paste its `SKILL.md` into a session manually.
+Install `taste-core` alongside it. The engine assumes the contract is present; without it, every rule falls back to PREFERENCE.
 
-Included package paths:
+## Demo prompts
 
-- `skills/taste-skill-v3` - primary `design-taste-frontend-v3` package.
-- `skills/GPT-taste` - GPT/OpenAI-oriented `design-taste-frontend-v3` package with `agents/openai.yaml`.
-- `skills/taste-brutal` - separate `design-taste-brutalist` package.
-
-## Zero-Setup Project Instructions
-
-For Claude Code:
-
-```bash
-cp CLAUDE.md /path/to/your-project/CLAUDE.md
-```
-
-For Codex:
-
-```bash
-cp CODEX.md /path/to/your-project/CODEX.md
-```
-
-Both files front-load the same v3 habits: state the design read, set the dials, cast the layout before markup, avoid common AI visual tells, and run pre-flight honestly.
-
-## Demo Prompts
-
-Ready-to-paste prompts live in `prompts/`:
-
-- `prompts/greenfield.md` - blank template plus a filled portfolio example.
-- `prompts/redesign.md` - audit-first redesign prompt.
-- `prompts/variants-and-perf.md` - multi-variant and final performance-gate workflow.
-
-## Repository Checks
-
-Run:
-
-```bash
-npm run check
-```
-
-The check validates markdown dash rules, section references, block contract shape, block index paths, and required project files for the included package layout.
+`prompts/greenfield.md`, `prompts/redesign.md`, and `prompts/variants-and-perf.md`.
 
 ## License
 
