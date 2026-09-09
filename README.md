@@ -129,7 +129,7 @@ npx playwright install chromium
 ## Installing
 
 ```bash
-npx skills add https://github.com/<your-username>/taste-skill-v3 --skill "design-taste-frontend-v3"
+npx skills add https://github.com/growing7696-cmyk/taste-skill-v3 --skill "design-taste-frontend-v3"
 ```
 
 Install `taste-core` alongside it. The engine assumes the contract is present; without it, every rule falls back to PREFERENCE.
