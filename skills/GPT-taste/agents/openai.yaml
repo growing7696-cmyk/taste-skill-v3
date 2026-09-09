@@ -1,0 +1,8 @@
+interface:
+  display_name: "Design Taste Frontend v3"
+  short_description: "Anti-slop landing pages and redesigns"
+  brand_color: "#E14E2D"
+  default_prompt: "Use $design-taste-frontend-v3 to design and build a distinctive landing page from this brief."
+
+policy:
+  allow_implicit_invocation: true

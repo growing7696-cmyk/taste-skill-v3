@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// taste-skill-v3 repo check. Run with: npm run check
+// taste-brutal repo check. Run with: npm run check
 // Zero dependencies. Exits non-zero if any check fails, so it can gate a commit or CI.
 
 import { readFileSync, readdirSync, existsSync, statSync } from "node:fs";
@@ -7,9 +7,10 @@ import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const SKILL_DIR = join(ROOT, "skills", "taste-skill-v3");
+const SKILL_DIR = join(ROOT, "skills", "taste-brutal");
 const SKILL_MD = join(SKILL_DIR, "SKILL.md");
 const BLOCKS_DIR = join(SKILL_DIR, "blocks");
+const ORIG_CLAUDE = join(ROOT, "for-original-taste-skill", "CLAUDE.md");
 
 const EM_DASH = "\u2014";
 const EN_DASH = "\u2013";
@@ -127,36 +128,19 @@ section("4. Block index points at real files");
 }
 
 // ---------------------------------------------------------------------------
-// 5. Required package files exist
+// 5. for-original CLAUDE.md references only sections real in a base skill
 // ---------------------------------------------------------------------------
-section("5. Required package files exist");
+section("5. Original-skill CLAUDE.md references are plausible");
 {
-  const required = [
-    "README.md",
-    "COMPARISON.md",
-    "CHANGELOG.md",
-    ".gitignore",
-    "CLAUDE.md",
-    "CODEX.md",
-    "LICENSE",
-    "package.json",
-    "prompts/greenfield.md",
-    "prompts/redesign.md",
-    "prompts/variants-and-perf.md",
-    ".claude-plugin/plugin.json",
-    "skills/taste-skill-v3/SKILL.md",
-    "skills/GPT-taste/SKILL.md",
-    "skills/GPT-taste/agents/openai.yaml",
-    "skills/taste-brutal/README.md",
-    "skills/taste-brutal/CLAUDE.md",
-    "skills/taste-brutal/.claude-plugin/plugin.json",
-    "skills/taste-brutal/skills/taste-brutal/SKILL.md",
-  ];
-
-  for (const r of required) {
-    checks++;
-    if (existsSync(join(ROOT, r))) pass(`${r} exists`);
-    else fail(`${r} is missing`);
+  checks++;
+  if (!existsSync(ORIG_CLAUDE)) { pass("no base-skill CLAUDE.md in this repo (not applicable), skipped"); }
+  else {
+    const txt = readFileSync(ORIG_CLAUDE, "utf8");
+    // just sanity: every "Section X" here should look like a real section number, and
+    // the file must NOT reference v3-only sections (1.6, 15) since base skill lacks them
+    const v3only = [...txt.matchAll(/Section\s+(1\.6|15)\b/g)].map((m) => m[1]);
+    if (v3only.length) fail(`CLAUDE.md for the base skill references v3-only sections: ${[...new Set(v3only)].join(", ")}`);
+    else pass("references no v3-only sections (safe to drop onto the base skill)");
   }
 }
 

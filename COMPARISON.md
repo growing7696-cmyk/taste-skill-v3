@@ -1,35 +1,79 @@
-# v3 vs the base skill: what actually differs
+# v3 vs the base skill
 
-This is a rule-level comparison, not a screenshot. Every claim here can be checked against the two `SKILL.md` files directly, so nothing depends on trusting a rendered image. The base skill (`design-taste-frontend`) is public; diff it against this repo's `skills/taste-skill-v3/SKILL.md` and every row below holds.
+This is a rule-level comparison. It is based on the files currently shipped in this repository, especially the included v3 skill packages and their `SKILL.md`, `reference/`, and `blocks/` files.
 
-## Sections v3 adds (the base skill has none of these)
+## Current Package Shape
 
-Both skills share the same section numbering for everything inherited. These four section numbers exist ONLY in v3:
+This repo includes three skill packages:
 
-| Section | Name | What it does | Why the base skill can't match it |
-| --- | --- | --- | --- |
-| **1.5** | Layout Casting | Assigns a deliberate, rotated layout set per build before any markup, with a hero-paradigm rotation rule and a structural-variety floor. | The base skill controls layout only through bans (Section 4.7 repetition ban), which are checked after the fact. It has no active up-front casting step, so it converges on safe defaults. Run the base skill twice on one brief and it returns effectively the same page. |
-| **1.6** | Multi-Variant Mode | One brief produces N genuinely different directions (different hero, spine, dial posture), with a comparison table and a recommendation. | The base skill is one-brief-one-page by construction. "Several deliberately different directions" is not a concept it has. |
-| **6.5** | Security Guardrails (XSS) | Hard rules against the XSS vectors AI actually ships: unsanitized `dangerouslySetInnerHTML`/`innerHTML`, `javascript:` URLs in `href`, unsanitized markdown, string-built dynamic script. Enforced in Pre-Flight. | The base skill (and other design skills) never touch security. XSS is invisible in a screenshot and in a Lighthouse score, so the polish loop never catches it. |
-| **9.5** | UX Writing (Anti-AI-Copy) | Corrects the four structural tells of AI copy (empty adjectives instead of facts, uniform sentence rhythm, feeling-first headlines, setup-phrase habit) as a rewrite discipline, language-agnostic. | The base skill bans a few cliche words but never corrects copy structure. A page can pass every visual check and still read as AI-written the moment the copy loads. |
-| **15** | Performance Gate | A FINAL build is not done until Lighthouse is actually run on a production build and clears Performance >= 90 and A11y/BP/SEO >= 95, with real numbers reported and specific fixes when it falls short. | The base skill sets up good-performance inputs but never measures. Its own audit says it did not run Lighthouse. v3 measures and gates. |
+```text
+skills/taste-skill-v3/   primary v3 skill package
+skills/GPT-taste/        GPT/OpenAI-oriented package of the v3 skill
+skills/taste-brutal/     neo-brutalist companion skill package
+```
 
-## A section the base skill leaves empty, v3 fills
+The comparison below focuses on the v3 frontend taste skill. `skills/GPT-taste` packages the same v3 direction for GPT/OpenAI use, while `skills/taste-brutal` is a separate included skill that reuses the engine with a neo-brutalist aesthetic.
 
-| Section | Base skill | v3 |
+## What v3 Adds
+
+| Area | Base skill | v3 in this repo |
 | --- | --- | --- |
-| **12. Block Library** | Defines an 8-part block schema, then ships zero blocks ("populated iteratively"). When told to use a Sticky-Stack, the agent has no implementation and falls back to its default. | Ships four real blocks against the same schema (`editorial-manifesto` hero, `sticky-stack`, `editorial-asymmetric`, `bento-grid`), each with props, Server/Client split, mobile fallback, motion variants, dark-mode notes, anti-patterns. |
+| Layout variety | Repetition is mostly controlled by bans and review after the page exists. | Layout is cast before markup. The agent states a hero paradigm, layout seed, and section-by-section layout families before building. |
+| Same brief twice | Can converge on the same safe structure. | Uses hero rotation and a layout seed to make repeat runs diverge while staying faithful to the brief. |
+| Multiple directions | One brief usually produces one page. | Multi-Variant Mode creates separate design directions and compares them when the user asks for variants. |
+| UX writing | Mostly focused on visual polish and a few wording tells. | Adds a copy-quality pass: concrete facts over empty adjectives, native-language rhythm, checkable headlines, and fewer setup phrases. |
+| Security | Not a design-skill concern. | Adds XSS guardrails for user HTML, markdown, URLs, scripts, and unsafe React escape hatches. |
+| Performance | Encourages good performance practices. | Requires final builds to measure production performance when possible, with Lighthouse targets. |
+| Block library | Defines the concept of reusable blocks. | Ships four actual block files that match the contract. |
 
-## Inherited unchanged
+## Included Skill Files
 
-Sections 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14 and the appendices are inherited from the base skill. v3 does not weaken them; it adds the rows above on top. That is why v3 ties the base skill on the shared aesthetic rules and pulls ahead only where it adds new machinery.
+Primary v3 package:
 
-## How to verify this yourself (the part that matters)
+- `skills/taste-skill-v3/SKILL.md`
+- `skills/taste-skill-v3/reference/appendix-canonical-sources.md`
+- `skills/taste-skill-v3/reference/appendix-install-commands.md`
+- `skills/taste-skill-v3/reference/appendix-liquid-glass.md`
+- `skills/taste-skill-v3/reference/block-library-contract.md`
+- `skills/taste-skill-v3/reference/pattern-vocabulary.md`
+- `skills/taste-skill-v3/reference/redesign-protocol.md`
+- `skills/taste-skill-v3/reference/scroll-skeletons.md`
+- `skills/taste-skill-v3/blocks/hero/editorial-manifesto.md`
+- `skills/taste-skill-v3/blocks/feature/sticky-stack.md`
+- `skills/taste-skill-v3/blocks/feature/editorial-asymmetric.md`
+- `skills/taste-skill-v3/blocks/feature/bento-grid.md`
 
-Do not trust the table. Reproduce it:
+Root support files:
 
-1. Install the base skill (`design-taste-frontend`) and run `prompts/greenfield.md`'s Mara Vieno brief twice. The two pages come out structurally the same: same Asymmetric Split hero, same spine, new text.
-2. Install this repo's v3 and run the same brief twice. The two pages come out structurally different (different hero paradigm each time), because of Section 1.5's seed and hero rotation.
-3. Build each to production and run Lighthouse in an incognito window. v3's Section 15 gate targets Performance >= 90; in the reference build it measured 91 against the base skill's 84 (green tier vs yellow tier) on the same brief.
+- `CLAUDE.md`
+- `CODEX.md`
+- `prompts/greenfield.md`
+- `prompts/redesign.md`
+- `prompts/variants-and-perf.md`
+- `scripts/check.mjs`
 
-Steps 1 and 2 need no screenshots and no trust: the divergence is the evidence, and anyone can produce it in about five minutes.
+GPT/OpenAI-oriented package:
+
+- `skills/GPT-taste/SKILL.md`
+- `skills/GPT-taste/agents/openai.yaml`
+- `skills/GPT-taste/reference/`
+- `skills/GPT-taste/blocks/`
+
+Neo-brutalist companion package:
+
+- `skills/taste-brutal/README.md`
+- `skills/taste-brutal/CLAUDE.md`
+- `skills/taste-brutal/.claude-plugin/plugin.json`
+- `skills/taste-brutal/skills/taste-brutal/SKILL.md`
+- `skills/taste-brutal/skills/taste-brutal/reference/`
+- `skills/taste-brutal/skills/taste-brutal/blocks/`
+
+## How To Verify
+
+1. Compare the base skill's `SKILL.md` against `skills/taste-skill-v3/SKILL.md`.
+2. Check that v3 asks for a design read, dial posture, and layout cast before markup.
+3. Ask for three variants from one brief and confirm that v3 produces distinct directions instead of palette swaps.
+4. Inspect the four block files under `skills/taste-skill-v3/blocks/`.
+5. Run `npm run check` to validate the included repository structure.
+
+The important difference is not a screenshot. It is the workflow: v3 makes structure explicit before implementation.
